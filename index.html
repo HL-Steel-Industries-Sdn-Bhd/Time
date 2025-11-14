@@ -9,12 +9,25 @@
     body {
         width: 100vw;
         height: 100vh;
-        background: #000;
+        background: linear-gradient(270deg,
+            #ff0000, #ff7f00, #ffff00,
+            #00ff00, #0000ff, #4b0082, #9400d3,
+            #ff0000
+        );
+        background-size: 1400% 1400%;
+        animation: rainbowMove 25s ease infinite;
+
         display: flex;
         align-items: center;
         justify-content: center;
         font-family: "Segoe UI", Arial, sans-serif;
         color: white;
+    }
+
+    @keyframes rainbowMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
 
     .clock-container {
@@ -23,7 +36,16 @@
         gap: 40px;
     }
 
-    /* Time section */
+    /* 发光设置 */
+    .glow {
+        text-shadow:
+            0 0 10px rgba(255,255,255,0.8),
+            0 0 18px rgba(255,255,255,0.7),
+            0 0 25px rgba(255,255,255,0.6),
+            0 0 40px rgba(255,255,255,0.5);
+    }
+
+    /* Time */
     .time {
         font-size: 90px;
         font-weight: 600;
@@ -34,10 +56,10 @@
         font-size: 40px;
         font-weight: 400;
         margin-left: 10px;
-        opacity: 0.8;
+        opacity: 0.9;
     }
 
-    /* Date section */
+    /* Date Box */
     .date-box {
         display: flex;
         flex-direction: column;
@@ -47,24 +69,23 @@
     .weekday {
         font-size: 48px;
         font-weight: 600;
-        opacity: 1;
         letter-spacing: 1px;
     }
 
     .date {
         font-size: 38px;
-        opacity: 0.9;
         letter-spacing: 2px;
+        opacity: 0.95;
     }
 </style>
 </head>
 <body>
 
 <div class="clock-container">
-    <div class="time" id="time"></div>
+    <div class="time glow" id="time"></div>
     <div class="date-box">
-        <div class="weekday" id="weekday"></div>
-        <div class="date" id="date"></div>
+        <div class="weekday glow" id="weekday"></div>
+        <div class="date glow" id="date"></div>
     </div>
 </div>
 
@@ -72,7 +93,7 @@
 function updateClock() {
     const now = new Date();
 
-    // Time (12h format)
+    // Time - 12h format
     let hours = now.getHours();
     const minutes = String(now.getMinutes()).padStart(2, "0");
     const ampm = hours >= 12 ? "PM" : "AM";
@@ -89,7 +110,7 @@ function updateClock() {
     ];
     document.getElementById("weekday").textContent = weekdays[now.getDay()];
 
-    // Date → 15 NOV 2025
+    // Date format: 15 NOV 2025
     const day = String(now.getDate()).padStart(2, "0");
     const monthNames = [
         "JAN","FEB","MAR","APR","MAY","JUN",
@@ -107,3 +128,4 @@ updateClock();
 
 </body>
 </html>
+
