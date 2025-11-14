@@ -2,25 +2,27 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HL STEEL Clock Centered</title>
+<title>Pastel Clock - LG WebOS Split Screen</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         width: 100vw;
         height: 100vh;
-
-        /* Pastel rainbow gradient */
         background: linear-gradient(270deg,
-            #ffd1dc, #ffe2b6, #fff7b2,
-            #d4f8d3, #c9e8ff, #ddd4ff, #ffd1dc
+            #ffd1dc,
+            #ffe2b6,
+            #fff7b2,
+            #d4f8d3,
+            #c9e8ff,
+            #ddd4ff,
+            #ffd1dc
         );
         background-size: 1200% 1200%;
-        animation: rainbowFlow 30s ease infinite;
-
+        animation: rainbowFlow 28s ease infinite;
         font-family: "Segoe UI", Arial, sans-serif;
-        display: flex;
         color: #000;
+        display: flex;
     }
 
     @keyframes rainbowFlow {
@@ -29,110 +31,73 @@
         100% { background-position: 0% 50%; }
     }
 
-    /* LEFT 25% */
-    .left {
-        width: 25%;
-        height: 100%;
-    }
+    /* Main split: Left 25%, Right 75% */
+    .left { width: 25%; display: flex; flex-direction: column; }
+    .right { width: 75%; display: flex; justify-content: flex-end; align-items: center; padding-right: 20px; }
 
-    /* RIGHT 75% — everything important is here */
-    .right {
-        width: 75%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;        /* Center horizontally */
-        justify-content: center;    /* Center vertically */
-        text-align: center;
-    }
+    /* Left split: Top 20%, Bottom 80% */
+    .left-top { height: 20%; display: flex; align-items: center; justify-content: center; }
+    .left-bottom { height: 80%; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; }
 
-    /* Company name ABOVE all content */
-    .company {
-        font-size: 32px;
-        font-weight: 800;
-        margin-bottom: 20px;
-        text-shadow: 0 0 6px rgba(0,0,0,0.15);
-    }
+    /* Time */
+    .time { font-size: 80px; font-weight: 700; letter-spacing: 2px; text-shadow: 0 0 6px rgba(0,0,0,0.12); }
 
-    /* Time block */
-    .time-box {
-        display: flex;
-        align-items: baseline;
-        font-weight: 700;
-        margin-bottom: 12px;
-    }
-
-    .time {
-        font-size: 88px;
-        letter-spacing: 2px;
-        text-shadow: 0 0 6px rgba(0,0,0,0.18);
-    }
-
+    /* AMPM closer to time (50% reduced spacing) */
     .ampm {
-        font-size: 38px;
-        margin-left: 6px; /* reduce spacing 50% */
-        opacity: 0.9;
-        text-shadow: 0 0 6px rgba(0,0,0,0.15);
+        font-size: 32px;
+        font-weight: 600;
+        margin-left: 5px; /* tightened spacing */
+        text-shadow: 0 0 4px rgba(0,0,0,0.1);
     }
 
-    .weekday {
-        font-size: 58px;
-        font-weight: 700;
-        margin-bottom: 6px;
-        text-shadow: 0 0 6px rgba(0,0,0,0.15);
-    }
-
-    .date {
-        font-size: 46px;
-        letter-spacing: 2px;
-        text-shadow: 0 0 6px rgba(0,0,0,0.15);
-    }
+    /* Weekday + Date on right side */
+    .weekday { font-size: 50px; font-weight: 700; text-shadow: 0 0 6px rgba(0,0,0,0.12); }
+    .date { font-size: 40px; letter-spacing: 2px; text-shadow: 0 0 6px rgba(0,0,0,0.12); margin-top: 8px; }
 </style>
 </head>
 <body>
 
-<div class="left"></div>
+<div class="left">
+    <div class="left-top"><!-- empty or optional logo placement --></div>
+
+    <div class="left-bottom">
+        <div class="time" id="time"></div>
+        <div class="ampm" id="ampm"></div>
+    </div>
+</div>
 
 <div class="right">
-    <div class="company">HL STEEL</div>
-
-    <div class="time-box">
-        <span class="time" id="time"></span>
-        <span class="ampm" id="ampm"></span>
+    <div style="text-align:right;">
+        <div class="weekday" id="weekday"></div>
+        <div class="date" id="date"></div>
     </div>
-
-    <div class="weekday" id="weekday"></div>
-    <div class="date" id="date"></div>
 </div>
 
 <script>
 function updateClock() {
     const now = new Date();
+    let h = now.getHours();
+    const m = String(now.getMinutes()).padStart(2, "0");
+    const ampm = h >= 12 ? "PM" : "AM";
+    h = h % 12 || 12;
 
-    let hours = now.getHours();
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-
-    const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12;
-    const hourStr = String(hours).padStart(2, "0");
-
-    document.getElementById("time").textContent = `${hourStr}:${minutes}`;
+    document.getElementById("time").textContent = `${String(h).padStart(2,"0")}:${m}`;
     document.getElementById("ampm").textContent = ampm;
 
-    const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];    
     document.getElementById("weekday").textContent = weekdays[now.getDay()];
 
     const day = String(now.getDate()).padStart(2, "0");
-    const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
-    const month = months[now.getMonth()];
+    const monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];    
+    const month = monthNames[now.getMonth()];
     const year = now.getFullYear();
 
     document.getElementById("date").textContent = `${day} ${month} ${year}`;
 }
+
 setInterval(updateClock, 1000);
 updateClock();
 </script>
 
 </body>
 </html>
-
