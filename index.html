@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HL Steel Corner Clock</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        width: 100vw;
+        height: 100vh;
+        background: #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: white;
+    }
+
+    .clock-container {
+        display: flex;
+        align-items: center;
+        gap: 40px;
+    }
+
+    /* Time section */
+    .time {
+        font-size: 90px;
+        font-weight: 600;
+        letter-spacing: 3px;
+    }
+
+    .ampm {
+        font-size: 40px;
+        font-weight: 400;
+        margin-left: 10px;
+        opacity: 0.8;
+    }
+
+    /* Date section */
+    .date-box {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+    }
+
+    .weekday {
+        font-size: 48px;
+        font-weight: 600;
+        opacity: 1;
+        letter-spacing: 1px;
+    }
+
+    .date {
+        font-size: 38px;
+        opacity: 0.9;
+        letter-spacing: 2px;
+    }
+</style>
+</head>
+<body>
+
+<div class="clock-container">
+    <div class="time" id="time"></div>
+    <div class="date-box">
+        <div class="weekday" id="weekday"></div>
+        <div class="date" id="date"></div>
+    </div>
+</div>
+
+<script>
+function updateClock() {
+    const now = new Date();
+
+    // Time (12h format)
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    const hourStr = String(hours).padStart(2, "0");
+
+    document.getElementById("time").innerHTML =
+        `${hourStr}:${minutes} <span class="ampm">${ampm}</span>`;
+
+    // Weekday
+    const weekdays = [
+        "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+    ];
+    document.getElementById("weekday").textContent = weekdays[now.getDay()];
+
+    // Date → 15 NOV 2025
+    const day = String(now.getDate()).padStart(2, "0");
+    const monthNames = [
+        "JAN","FEB","MAR","APR","MAY","JUN",
+        "JUL","AUG","SEP","OCT","NOV","DEC"
+    ];
+    const month = monthNames[now.getMonth()];
+    const year = now.getFullYear();
+
+    document.getElementById("date").textContent = `${day} ${month} ${year}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
+</body>
+</html>
