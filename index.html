@@ -2,20 +2,26 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HL Steel Corner Clock</title>
+<title>HL Steel Corner Clock - Pastel</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         width: 100vw;
         height: 100vh;
+
+        /* Pastel Rainbow Gradient */
         background: linear-gradient(270deg,
-            #ff0000, #ff7f00, #ffff00,
-            #00ff00, #0000ff, #4b0082, #9400d3,
-            #ff0000
+            #ffd1dc, /* pastel pink */
+            #ffe2b6, /* pastel peach */
+            #fff7b2, /* pastel yellow */
+            #d4f8d3, /* pastel mint */
+            #c9e8ff, /* pastel sky blue */
+            #ddd4ff, /* pastel lavender */
+            #ffd1dc  /* loop back pastel pink */
         );
-        background-size: 1400% 1400%;
-        animation: rainbowMove 25s ease infinite;
+        background-size: 1200% 1200%;
+        animation: rainbowFlow 28s ease infinite;
 
         display: flex;
         align-items: center;
@@ -24,7 +30,7 @@
         color: white;
     }
 
-    @keyframes rainbowMove {
+    @keyframes rainbowFlow {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
@@ -36,13 +42,12 @@
         gap: 40px;
     }
 
-    /* 发光设置 */
+    /* Soft Glow */
     .glow {
         text-shadow:
-            0 0 10px rgba(255,255,255,0.8),
-            0 0 18px rgba(255,255,255,0.7),
-            0 0 25px rgba(255,255,255,0.6),
-            0 0 40px rgba(255,255,255,0.5);
+            0 0 8px rgba(255,255,255,0.7),
+            0 0 14px rgba(255,255,255,0.6),
+            0 0 22px rgba(255,255,255,0.5);
     }
 
     /* Time */
@@ -59,7 +64,7 @@
         opacity: 0.9;
     }
 
-    /* Date Box */
+    /* Date Section */
     .date-box {
         display: flex;
         flex-direction: column;
@@ -69,7 +74,6 @@
     .weekday {
         font-size: 48px;
         font-weight: 600;
-        letter-spacing: 1px;
     }
 
     .date {
@@ -110,7 +114,7 @@ function updateClock() {
     ];
     document.getElementById("weekday").textContent = weekdays[now.getDay()];
 
-    // Date format: 15 NOV 2025
+    // Date: 15 NOV 2025
     const day = String(now.getDate()).padStart(2, "0");
     const monthNames = [
         "JAN","FEB","MAR","APR","MAY","JUN",
@@ -128,4 +132,5 @@ updateClock();
 
 </body>
 </html>
+
 
