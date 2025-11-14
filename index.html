@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>HL Steel Corner Clock - Pastel</title>
+<title>HL STEEL Clock Centered</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -10,24 +10,17 @@
         width: 100vw;
         height: 100vh;
 
-        /* Pastel Rainbow Gradient */
+        /* Pastel rainbow gradient */
         background: linear-gradient(270deg,
-            #ffd1dc, /* pastel pink */
-            #ffe2b6, /* pastel peach */
-            #fff7b2, /* pastel yellow */
-            #d4f8d3, /* pastel mint */
-            #c9e8ff, /* pastel sky blue */
-            #ddd4ff, /* pastel lavender */
-            #ffd1dc  /* loop back pastel pink */
+            #ffd1dc, #ffe2b6, #fff7b2,
+            #d4f8d3, #c9e8ff, #ddd4ff, #ffd1dc
         );
         background-size: 1200% 1200%;
-        animation: rainbowFlow 28s ease infinite;
+        animation: rainbowFlow 30s ease infinite;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
         font-family: "Segoe UI", Arial, sans-serif;
-        color: #000; /* Black text */
+        display: flex;
+        color: #000;
     }
 
     @keyframes rainbowFlow {
@@ -36,102 +29,110 @@
         100% { background-position: 0% 50%; }
     }
 
-    .clock-container {
+    /* LEFT 25% */
+    .left {
+        width: 25%;
+        height: 100%;
+    }
+
+    /* RIGHT 75% — everything important is here */
+    .right {
+        width: 75%;
+        height: 100%;
         display: flex;
-        align-items: center;
-        gap: 40px;
+        flex-direction: column;
+        align-items: center;        /* Center horizontally */
+        justify-content: center;    /* Center vertically */
+        text-align: center;
     }
 
-    /* Soft glow for black text — very subtle */
-    .glow {
-        text-shadow:
-            0 0 4px rgba(0,0,0,0.15),
-            0 0 10px rgba(0,0,0,0.10);
+    /* Company name ABOVE all content */
+    .company {
+        font-size: 32px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-shadow: 0 0 6px rgba(0,0,0,0.15);
     }
 
-    /* Time */
-    .time {
-        font-size: 90px;
+    /* Time block */
+    .time-box {
+        display: flex;
+        align-items: baseline;
         font-weight: 700;
-        letter-spacing: 3px;
-        color: #000;
+        margin-bottom: 12px;
+    }
+
+    .time {
+        font-size: 88px;
+        letter-spacing: 2px;
+        text-shadow: 0 0 6px rgba(0,0,0,0.18);
     }
 
     .ampm {
-        font-size: 40px;
-        font-weight: 500;
-        margin-left: 10px;
+        font-size: 38px;
+        margin-left: 6px; /* reduce spacing 50% */
         opacity: 0.9;
-        color: #000;
-    }
-
-    /* Date Section */
-    .date-box {
-        display: flex;
-        flex-direction: column;
-        text-align: right;
+        text-shadow: 0 0 6px rgba(0,0,0,0.15);
     }
 
     .weekday {
-        font-size: 48px;
+        font-size: 58px;
         font-weight: 700;
-        color: #000;
+        margin-bottom: 6px;
+        text-shadow: 0 0 6px rgba(0,0,0,0.15);
     }
 
     .date {
-        font-size: 38px;
+        font-size: 46px;
         letter-spacing: 2px;
-        opacity: 0.95;
-        color: #000;
+        text-shadow: 0 0 6px rgba(0,0,0,0.15);
     }
 </style>
 </head>
 <body>
 
-<div class="clock-container">
-    <div class="time glow" id="time"></div>
-    <div class="date-box">
-        <div class="weekday glow" id="weekday"></div>
-        <div class="date glow" id="date"></div>
+<div class="left"></div>
+
+<div class="right">
+    <div class="company">HL STEEL</div>
+
+    <div class="time-box">
+        <span class="time" id="time"></span>
+        <span class="ampm" id="ampm"></span>
     </div>
+
+    <div class="weekday" id="weekday"></div>
+    <div class="date" id="date"></div>
 </div>
 
 <script>
 function updateClock() {
     const now = new Date();
 
-    // Time - 12h format
     let hours = now.getHours();
     const minutes = String(now.getMinutes()).padStart(2, "0");
+
     const ampm = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12;
-    hours = hours ? hours : 12;
+    hours = hours % 12 || 12;
     const hourStr = String(hours).padStart(2, "0");
 
-    document.getElementById("time").innerHTML =
-        `${hourStr}:${minutes} <span class="ampm">${ampm}</span>`;
+    document.getElementById("time").textContent = `${hourStr}:${minutes}`;
+    document.getElementById("ampm").textContent = ampm;
 
-    // Weekday
-    const weekdays = [
-        "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
-    ];
+    const weekdays = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
     document.getElementById("weekday").textContent = weekdays[now.getDay()];
 
-    // Date: 15 NOV 2025
     const day = String(now.getDate()).padStart(2, "0");
-    const monthNames = [
-        "JAN","FEB","MAR","APR","MAY","JUN",
-        "JUL","AUG","SEP","OCT","NOV","DEC"
-    ];
-    const month = monthNames[now.getMonth()];
+    const months = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    const month = months[now.getMonth()];
     const year = now.getFullYear();
 
     document.getElementById("date").textContent = `${day} ${month} ${year}`;
 }
-
 setInterval(updateClock, 1000);
 updateClock();
 </script>
 
 </body>
 </html>
+
